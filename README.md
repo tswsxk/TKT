@@ -16,20 +16,20 @@ With [`EduData`](https://pypi.python.org/pypi/EduData), we test the models perfo
 
 |model name  | synthetic | assistment_2009_2010 | junyi |
 | ---------- | - |------------------ | ----- |
-| DKT        |           |                      |       |
-| DKT+       |           |                      |       |
-| EmbedDKT   |  |                   |       |
-| EmbedDKT+ |  |  ||
+| DKT        | 0.6438748958881487 | 0.7442573465541942 | 0.8305416859735839 |
+| DKT+       | **0.8062221383790489** | 0.7483424087919035 |       |
+| EmbedDKT   | 0.4858168704660636 | 0.7285572301977586 |       |
+| EmbedDKT+ | 0.7340996181876187 | **0.7490900876356051** ||
 | DKVMN | TBA | TBA |TBA|
 
 The f1 scores are listed as follows:
 
 |model name  | synthetic | assistment_2009_2010 | junyi |
 | ---------- | ------------------ | ----- | ----- |
-| DKT        |           |                      |       |
-| DKT+       |           |                      |       |
-| EmbedDKT   |           |                      |       |
-| EmbedDKT+   |           |                      |       |
+| DKT        | 0.5813237474584396 | 0.7134380508024369 | 0.7732850122818582 |
+| DKT+       | **0.7041804463370387** | **0.7137627713343819** |       |
+| EmbedDKT   | 0.4716821311199386     | 0.7095025134079656 |       |
+| EmbedDKT+   | 0.6316953625658291 | 0.7101790604990228 |       |
 | DKVMN | TBA       | TBA                  | TBA   |
 
 The information of the benchmark datasets can be found in EduData docs.
@@ -56,6 +56,36 @@ edudata download ktbd
 * DKT: `hidden_num` is usually set to the nearest hundred number to the `ku_num`
 * EmbedDKT: `latent_dim` is usually set to a value litter than or equal to `\sqrt(hidden_num * ku_num)`
 * DKVMN: `key_embedding_dim = key_memory_state_dim` and `value_embedding_dim = value_memory_state_dim`
+
+### Notice
+Some interfaces of pytorch may change with version changing, such as
+```python
+import torch
+torch.nn.functional.one_hot
+```
+which may caused some errors like:
+```shell
+AttributeError: module 'torch.nn.functional' has no attribute 'one_hot'
+```
+
+Except that, there is a known bug `Segmentation fault: 11`:
+```shell
+Segmentation fault: 11
+
+Stack trace:
+  [bt] (0) /usr/local/lib/python3.6/site-packages/mxnet/libmxnet.so(+0x2e6b160) [0x7f3e4b5b6160]
+  [bt] (1) /lib64/libc.so.6(+0x36340) [0x7f3ec3c89340]
+  [bt] (2) /usr/local/lib/python3.6/site-packages/torch/lib/libtorch.so(+0x40a5760) [0x7f3dc265c760]
+  [bt] (3) /usr/local/lib/python3.6/site-packages/torch/lib/libtorch.so(+0x40a35c5) [0x7f3dc265a5c5]
+  [bt] (4) /lib64/libstdc++.so.6(+0x5cb19) [0x7f3eb807db19]
+  [bt] (5) /lib64/libc.so.6(+0x39c29) [0x7f3ec3c8cc29]
+  [bt] (6) /lib64/libc.so.6(+0x39c77) [0x7f3ec3c8cc77]
+  [bt] (7) /lib64/libc.so.6(__libc_start_main+0xfc) [0x7f3ec3c7549c]
+  [bt] (8) python3() [0x41da20]
+```
+However, the mentioned-above bug does not affect the train and evaluation.
+
+PS. if you think those problems are so easy to solve, please do not hesitate to contact us :-).
 
 
 ## Tutorial
@@ -139,9 +169,19 @@ python Model.py --help
 python Model.py $subcommand --help 
 ```
 
-The cli tools is constructed based on 
-[longling ConfigurationParser](https://longling.readthedocs.io/zh/latest/submodule/lib/index.html#module-longling.lib.parser). 
+The cli tools is constructed based on [longling ConfigurationParser](https://longling.readthedocs.io/zh/latest/submodule/lib/index.html#module-longling.lib.parser). 
 Refer to the [glue documentation(TBA)] for detailed usage.
+
+### DKT
+```shell
+# DKT
+python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx "cuda:0" --model_name DKT --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset junyi
+
+python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx "cuda:0" --model_name DKT --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset junyi
+
+# DKT+
+python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(600);dropout=float(0.5)" --loss_params "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)" --ctx="cuda:0" --model_name DKT+ --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
+```
 
 ```bash
 python3 run.py train ~/TKT/data/\$dataset/data/train ~/TKT/data/\$dataset/data/test --root ~/TKT --workspace DKT  --hyper_params "nettype=DKT;ku_num=int(146);hidden_num=int(200);dropout=float(0.5)" --dataset assistment0910c --batch_size "int(16)" --ctx "cuda:0" --optimizer_params "lr=float(1e-2)"
