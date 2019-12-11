@@ -5,4 +5,3 @@ from .etl import *
 from .sym import SequenceLogisticMaskLoss as SLMLoss, LogisticMaskLoss as LMLoss
 from .sym import SequenceLogisticMaskLoss, LogisticMaskLoss
 from .parallel import set_device
-
