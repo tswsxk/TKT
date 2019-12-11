@@ -1,6 +1,7 @@
 # TKT
 
 [![Build Status](https://www.travis-ci.org/tswsxk/TKT.svg?branch=master)](https://www.travis-ci.org/tswsxk/TKT)
+[![codecov](https://codecov.io/gh/tswsxk/TKT/branch/master/graph/badge.svg)](https://codecov.io/gh/tswsxk/TKT)
 
 Multiple Knowledge Tracing models implemented by mxnet-gluon. 
 For convenient dataset downloading and preprocessing of knowledge tracing task, 
