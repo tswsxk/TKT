@@ -1,5 +1,6 @@
 # TKT
 
+[![PyPI](https://img.shields.io/pypi/v/TKT.svg)](https://pypi.python.org/pypi/TKT)
 [![Build Status](https://www.travis-ci.org/tswsxk/TKT.svg?branch=master)](https://www.travis-ci.org/tswsxk/TKT)
 [![codecov](https://codecov.io/gh/tswsxk/TKT/branch/master/graph/badge.svg)](https://codecov.io/gh/tswsxk/TKT)
 
