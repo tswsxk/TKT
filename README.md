@@ -157,8 +157,14 @@ By using the cli tools from `EduData`, we can quickly convert the data in the ab
 edudata tl2json $src $tar
 ```
 Refer to [Edudata Documentation](https://github.com/bigdata-ustc/EduData) for installation and usage tutorial.
+ 
+ 
+### CLI
 
 #### General Command Format
+
+---
+
 All command to invoke the model has the same cli canonical form:
 ```shell
 python Model.py $subcommand $parameters1 $parameters2 ...
@@ -168,42 +174,41 @@ There are several options for the subcommand, use `--help` to see more options a
 python Model.py --help
 python Model.py $subcommand --help 
 ```
+The cli tools is constructed based on [longling ConfigurationParser](https://longling.readthedocs.io/zh/latest/submodule/lib/index.html#module-longling.lib.parser).
 
-The cli tools is constructed based on [longling ConfigurationParser](https://longling.readthedocs.io/zh/latest/submodule/lib/index.html#module-longling.lib.parser). 
-Refer to the [glue documentation(TBA)] for detailed usage.
+#### Demo
+
+---
+
+```shell
+# basic
+python3 DKT.py train $HOME/XKT/data/ktbd/junyi/train.json $HOME/XKT/data/ktbd/junyi/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx="gpu(0)" --model_dir $HOME/XKT/data/ktbd/junyi/model/DKT 
+# advanced path configuration
+python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx="gpu(0)" --model_name DKT --root=$HOME/XKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
+```
+The two command mentioned above are equally the same. 
+About how to use the advanced path configuration, 
+refer to [longling doc](https://longling.readthedocs.io/zh/latest/submodule/ML/index.html#configuration).
+
+---
 
 ### DKT
 ```shell
 # DKT
-python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx "cuda:0" --model_name DKT --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset junyi
-
-python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx "cuda:0" --model_name DKT --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset junyi
-
+python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx="cuda:0" --model_name DKT --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
 # DKT+
-python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(600);dropout=float(0.5)" --loss_params "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)" --ctx="cuda:0" --model_name DKT+ --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
-```
-
-```bash
-python3 run.py train ~/TKT/data/\$dataset/data/train ~/TKT/data/\$dataset/data/test --root ~/TKT --workspace DKT  --hyper_params "nettype=DKT;ku_num=int(146);hidden_num=int(200);dropout=float(0.5)" --dataset assistment0910c --batch_size "int(16)" --ctx "cuda:0" --optimizer_params "lr=float(1e-2)"
-```
-
-```bash
-python3 DKT.py train ~/TKT/data/\$dataset/data/train ~/TKT/data/\$dataset/data/test --root ~/TKT --workspace DKT  --hyper_params "nettype=DKT;ku_num=int(146);hidden_num=int(200);dropout=float(0.5)" --dataset assistment0910c --batch_size "int(16)" --ctx "cuda:0" --optimizer_params "lr=float(1e-2)"
+python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --loss_params "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)" --ctx="cuda:0" --model_name DKT+ --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
 ```
 
 
-```bash
-python3 DKT.py train \$data_dir/train \$data_dir/test --workspace EmbedDKT  --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);latent_dim=int(600);dropout=float(0.5)" --dataset="junyi" --ctx="cuda:0"
+### EmbedDKT
+```shell
+# EmbedDKT
+python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);latent_dim=int(600);dropout=float(0.5)" --ctx="cuda:0" --model_name EmbedDKT --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
+# EmbedDKT+ 
+python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);latent_dim=int(600);dropout=float(0.5)" --loss_params "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)" --ctx="cuda:0" --model_name EmbedDKT+ --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
 ```
 
-```bash
-python3 DKT.py train \$data_dir/train_0 \$data_dir/valid_0 --workspace DKT+  --hyper_params "nettype=DKT+;ku_num=int(835);hidden_num=int(900);latent_dim=int(600);dropout=float(0.5)" --dataset="junyi_100" --ctx="cuda:0" --loss_params "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)"
-```
-
-```bash
-export PYTHONPATH=$PYTHONPATH:~/TKT
-python3 DKT.py train \$data_dir/train_\$caption \$data_dir/valid_\$caption --root ~/TKT  --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx cuda:5 --caption 0 --workspace DKT_0 --dataset="junyi_2000"
-```
 
 ## Appendix
 
