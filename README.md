@@ -17,7 +17,7 @@ With [`EduData`](https://pypi.python.org/pypi/EduData), we test the models perfo
 |model name  | synthetic | assistment_2009_2010 | junyi |
 | ---------- | - |------------------ | ----- |
 | DKT        | 0.6438748958881487 | 0.7442573465541942 | 0.8305416859735839 |
-| DKT+       | **0.8062221383790489** | 0.7483424087919035 | **0.8482202372979805** |
+| DKT+       | **0.8062221383790489** | 0.7483424087919035 | **0.8497422607539136** |
 | EmbedDKT   | 0.4858168704660636 | 0.7285572301977586 | 0.8194401881889697 |
 | EmbedDKT+ | 0.7340996181876187 | **0.7490900876356051** |0.8405445812109871|
 | DKVMN | TBA | TBA |TBA|
@@ -27,7 +27,7 @@ The f1 scores are listed as follows:
 |model name  | synthetic | assistment_2009_2010 | junyi |
 | ---------- | ------------------ | ----- | ----- |
 | DKT        | 0.5813237474584396 | 0.7134380508024369 | 0.7732850122818582 |
-| DKT+       | **0.7041804463370387** | **0.7137627713343819** | **0.7926328819632342** |
+| DKT+       | **0.7041804463370387** | **0.7137627713343819** | **0.7928075377114897** |
 | EmbedDKT   | 0.4716821311199386     | 0.7095025134079656 | 0.7681817174082963 |
 | EmbedDKT+   | 0.6316953625658291 | 0.7101790604990228 | 0.7903592922756097 |
 | DKVMN | TBA       | TBA                  | TBA   |
@@ -136,7 +136,7 @@ To deal with the issue that the dataset is store in `tl` format:
 
 Refer to [Edudata Documentation](https://github.com/bigdata-ustc/EduData#format-converter).
 
- 
+
 ### CLI
 
 #### General Command Format
