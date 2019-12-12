@@ -187,6 +187,21 @@ python3 DKT.py train $HOME/XKT/data/ktbd/junyi/train.json $HOME/XKT/data/ktbd/ju
 # advanced path configuration
 python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx="gpu(0)" --model_name DKT --root=$HOME/XKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
 ```
+And we can get something like that:
+```text
+junyi/
+├── model/
+│   └── DKT/
+│       ├── configuration.json
+│       ├── DKT-0001.parmas
+│       ├── DKT-0002.parmas
+│       ├── ...
+│       ├── DKT-0020.parmas
+│       ├── result.json
+│       └── result.log
+├── test.json
+└── train.json
+```
 The two command mentioned above are equally the same. 
 About how to use the advanced path configuration, 
 refer to [longling doc](https://longling.readthedocs.io/zh/latest/submodule/ML/index.html#configuration).
