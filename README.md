@@ -97,25 +97,7 @@ PS. if you think those problems are so easy to solve, please do not hesitate to 
     1. `pip install -e .` to install the package, or
     2. `export PYTHONPATH=$PYTHONPATH:~/TKT`
     
-### Preliminary
-As an example, suppose you create the project under your own `home` directory 
-and create a `data` directory to store the data (like `train` and `test`) and model.
-The toc of the project is looked like as follows:
-
-```text
-└── TKT/                            <- root
-    ├── data/
-    │   └── dataset/                <- data_dir
-    │        ├── workspace/         <- workspace, the model file like parameters file will be stored here
-    │        ├── train
-    │        └── test
-    ├── ...
-    └── TKT/
-```
-Certainly, the structure is not a strict limitation, you can also specify the `data` position as you want. 
-Here is just a toy example :-).  
-
-#### Data Format
+### Data Format
 In `TKT`, all sequence is store in `json` format, such as:
 ```json
 [[419, 1], [419, 1], [419, 1], [665, 0], [665, 0]]
@@ -142,22 +124,18 @@ def extract(data_src):
 
     return responses
 ```
-The above program can be found in `TKT/TKT/shared/etl.py`
+The above program can be found in `TKT/TKT/shared/etl.py`.
 
-##### Convert other format into json sequence
-There is another common-seen format in KT task:
+To deal with the issue that the dataset is store in `tl` format:
+
 ```text
 5
 419,419,419,665,665
 1,1,1,0,0
 ```
-By using the cli tools from `EduData`, we can quickly convert the data in the above-mentioned format into json sequence.
-```shell
-# convert tl sequence to json sequence
-edudata tl2json $src $tar
-```
-Refer to [Edudata Documentation](https://github.com/bigdata-ustc/EduData) for installation and usage tutorial.
- 
+
+Refer to [Edudata Documentation](https://github.com/bigdata-ustc/EduData#format-converter).
+
  
 ### CLI
 
@@ -179,6 +157,29 @@ The cli tools is constructed based on [longling ConfigurationParser](https://lon
 #### Demo
 
 ---
+
+As an example, suppose you create the project under your own `home` directory 
+and create a `data` directory to store the data (like `train` and `test`) and model. 
+Assume that you are going to test the models on [ktbd](http://base.ustc.edu.cn/data/ktbd/) dataset, 
+and the toc of the project is looked like as follows:
+
+```text
+└── XKT/                            
+    ├── data/
+    │   └── ktbd/                
+    │        ├── junyi/             <-- dataset
+    │        │   ├── train.json
+    │        │   └── test.json
+    │        ├── ...
+    │        └── synthetic/
+    ├── ...
+    └── XKT/
+```
+
+And in each dataset, `train.json` is the training dataset, and `test.json` is the test dataset, 
+we want the model is placed under the corresponding dataset directory,
+where a `model` directory is created to store the all models. Thus, we use the following command to train the model
+
 
 ```shell
 # basic
