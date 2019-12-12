@@ -17,9 +17,9 @@ With [`EduData`](https://pypi.python.org/pypi/EduData), we test the models perfo
 |model name  | synthetic | assistment_2009_2010 | junyi |
 | ---------- | - |------------------ | ----- |
 | DKT        | 0.6438748958881487 | 0.7442573465541942 | 0.8305416859735839 |
-| DKT+       | **0.8062221383790489** | 0.7483424087919035 |       |
-| EmbedDKT   | 0.4858168704660636 | 0.7285572301977586 |       |
-| EmbedDKT+ | 0.7340996181876187 | **0.7490900876356051** ||
+| DKT+       | **0.8062221383790489** | 0.7483424087919035 | **0.8482202372979805** |
+| EmbedDKT   | 0.4858168704660636 | 0.7285572301977586 | 0.8194401881889697 |
+| EmbedDKT+ | 0.7340996181876187 | **0.7490900876356051** |0.8405445812109871|
 | DKVMN | TBA | TBA |TBA|
 
 The f1 scores are listed as follows:
@@ -27,9 +27,9 @@ The f1 scores are listed as follows:
 |model name  | synthetic | assistment_2009_2010 | junyi |
 | ---------- | ------------------ | ----- | ----- |
 | DKT        | 0.5813237474584396 | 0.7134380508024369 | 0.7732850122818582 |
-| DKT+       | **0.7041804463370387** | **0.7137627713343819** |       |
-| EmbedDKT   | 0.4716821311199386     | 0.7095025134079656 |       |
-| EmbedDKT+   | 0.6316953625658291 | 0.7101790604990228 |       |
+| DKT+       | **0.7041804463370387** | **0.7137627713343819** | **0.7926328819632342** |
+| EmbedDKT   | 0.4716821311199386     | 0.7095025134079656 | 0.7681817174082963 |
+| EmbedDKT+   | 0.6316953625658291 | 0.7101790604990228 | 0.7903592922756097 |
 | DKVMN | TBA       | TBA                  | TBA   |
 
 The information of the benchmark datasets can be found in EduData docs.
@@ -42,7 +42,7 @@ In addition, all models are trained 20 epochs with `batch_size=16`, where the be
 | DKT+       | `lr=float(0.2);lw1=float(0.001);lw2=float(10.0)` | `lr=float(0.1);lw1=float(0.003);lw2=float(3.0)` | `lr=float(0.01);lw1=float(0.001);lw2=float(1.0)` |
 | EmbedDKT   | `hidden_num=int(100);latent_dim=int(35);dropout=float(0.5)` | `hidden_num=int(200);latent_dim=int(75);dropout=float(0.5)` | `hidden_num=int(900);latent_dim=int(600);dropout=float(0.5)` |
 | EmbedDKT+   | `lr=float(0.2);lw1=float(0.001);lw2=float(10.0)` | `lr=float(0.1);lw1=float(0.003);lw2=float(3.0)` | `lr=float(0.01);lw1=float(0.001);lw2=float(1.0)` |
-| DKVMN      | `hidden_num=int(50);key_embedding_dim=int(10);value_embedding_dim=int(10);key_memory_size=int(5);key_memory_state_dim=int(10);value_memory_size=int(5);value_memory_state_dim=int(10);dropout=float(0.5)` | `hidden_num=int(50);key_embedding_dim=int(50);value_embedding_dim=int(200);key_memory_size=int(50);key_memory_state_dim=int(50);value_memory_size=int(50);value_memory_state_dim=int(200);dropout=float(0.5)` | `hidden_num=int(50);key_embedding_dim=int(50);value_embedding_dim=int(200);key_memory_size=int(20);key_memory_state_dim=int(50);value_memory_size=int(20);value_memory_state_dim=int(200);dropout=float(0.5)` |
+| DKVMN      | `hidden_num=int(50);key_embedding_dim=int(10);value_embedding_dim=int(10);key_memory_size=int(5);key_memory_state_dim=int(10);value_memory_size=int(5);value_memory_state_dim=int(10);dropout=float(0.5)` | `hidden_num=int(50);key_embedding_dim=int(50);value_embedding_dim=int(200);key_memory_size=int(50);key_memory_state_dim=int(50);value_memory_size=int(50);value_memory_state_dim=int(200);dropout=float(0.5)` | `hidden_num=int(600);key_embedding_dim=int(50);value_embedding_dim=int(200);key_memory_size=int(20);key_memory_state_dim=int(50);value_memory_size=int(20);value_memory_state_dim=int(200);dropout=float(0.5)` |
 
 The number after `-` in the first row indicates the knowledge units number in the dataset. The datasets we used can be  either found in [basedata-ktbd](http://base.ustc.edu.cn/data/ktbd/) or be downloaded by:
 
@@ -116,7 +116,7 @@ Certainly, the structure is not a strict limitation, you can also specify the `d
 Here is just a toy example :-).  
 
 #### Data Format
-In `XKT`, all sequence is store in `json` format, such as:
+In `TKT`, all sequence is store in `json` format, such as:
 ```json
 [[419, 1], [419, 1], [419, 1], [665, 0], [665, 0]]
 ```
@@ -142,7 +142,7 @@ def extract(data_src):
 
     return responses
 ```
-The above program can be found in `XKT/XKT/shared/etl.py`
+The above program can be found in `TKT/TKT/shared/etl.py`
 
 ##### Convert other format into json sequence
 There is another common-seen format in KT task:
@@ -222,19 +222,6 @@ the following are the url of those implemented by python (the stared is the auth
 * EKT[[pytorch*]](https://github.com/bigdata-ustc/ekt)
 
 ### Dataset
-There are some datasets which are suitable for this task, and the followings are the url:
-
-* [KDD Cup 2010](https://pslcdatashop.web.cmu.edu/KDDCup/downloads.jsp)
-
-* [ASSISTments](https://sites.google.com/site/assistmentsdata/)
-
-* [OLI Engineering Statics 2011](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=507)
-
-* [JunyiAcademy Math Practicing Log](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=1198)
-
-* [slepemapy.cz](https://www.fi.muni.cz/adaptivelearning/?a=data)
-
-* [synthetic](https://github.com/chrispiech/DeepKnowledgeTracing/tree/master/data/synthetic)
-
-For Latest collection, you can refer to [BaseData](http://base.ustc.edu.cn/data/)
-
+There are some datasets which are suitable for this task, 
+you can refer to [BaseData ktbd doc](https://github.com/bigdata-ustc/EduData/blob/master/docs/ktbd.md) 
+for these datasets 
