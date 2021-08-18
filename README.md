@@ -4,6 +4,8 @@
 [![Build Status](https://www.travis-ci.org/tswsxk/TKT.svg?branch=master)](https://www.travis-ci.org/tswsxk/TKT)
 [![codecov](https://codecov.io/gh/tswsxk/TKT/branch/master/graph/badge.svg)](https://codecov.io/gh/tswsxk/TKT)
 
+I am going to upgrade this repo, where the arch will have a large modification
+
 Multiple Knowledge Tracing models implemented by pytorch. 
 For convenient dataset downloading and preprocessing of knowledge tracing task, 
 visit [Edudata](https://github.com/bigdata-ustc/EduData) for handy api.
