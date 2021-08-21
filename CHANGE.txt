@@ -1,0 +1,3 @@
+v0.0.2:
+    1. refactor the whole architecture
+    2. add dkt-family: dkt, edkt, dkt+ and edkt+
