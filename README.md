@@ -4,13 +4,13 @@
 [![Build Status](https://www.travis-ci.org/tswsxk/TKT.svg?branch=master)](https://www.travis-ci.org/tswsxk/TKT)
 [![codecov](https://codecov.io/gh/tswsxk/TKT/branch/master/graph/badge.svg)](https://codecov.io/gh/tswsxk/TKT)
 
-I am going to upgrade this repo, where the arch will have a large modification
 
-Multiple Knowledge Tracing models implemented by pytorch. 
-For convenient dataset downloading and preprocessing of knowledge tracing task, 
-visit [Edudata](https://github.com/bigdata-ustc/EduData) for handy api.
+TKT is an extension of [EduKTM](https://github.com/bigdata-ustc/EduKTM), 
+which has more advanced features making the training, 
+evaluating and deployment faster and easier.
 
-Visit https://base.ustc.edu.cn for more of our works.
+See [Examples](examples) for quick start
+
 
 ## Performance in well-known Dataset
 
@@ -147,86 +147,8 @@ Refer to [Edudata Documentation](https://github.com/bigdata-ustc/EduData#format-
 
 All command to invoke the model has the same cli canonical form:
 ```shell
-python Model.py $subcommand $parameters1 $parameters2 ...
+python Model.py $mode $parameters1 $parameters2 ...
 ```
-There are several options for the subcommand, use `--help` to see more options and the corresponding parameters:
-```shell
-python Model.py --help
-python Model.py $subcommand --help 
-```
-The cli tools is constructed based on [longling ConfigurationParser](https://longling.readthedocs.io/zh/latest/submodule/lib/index.html#module-longling.lib.parser).
-
-#### Demo
-
----
-
-As an example, suppose you create the project under your own `home` directory 
-and create a `data` directory to store the data (like `train` and `test`) and model. 
-Assume that you are going to test the models on [ktbd](http://base.ustc.edu.cn/data/ktbd/) dataset, 
-and the toc of the project is looked like as follows:
-
-```text
-└── XKT/                            
-    ├── data/
-    │   └── ktbd/                
-    │        ├── junyi/             <-- dataset
-    │        │   ├── train.json
-    │        │   └── test.json
-    │        ├── ...
-    │        └── synthetic/
-    ├── ...
-    └── XKT/
-```
-
-And in each dataset, `train.json` is the training dataset, and `test.json` is the test dataset, 
-we want the model is placed under the corresponding dataset directory,
-where a `model` directory is created to store the all models. Thus, we use the following command to train the model
-
-
-```shell
-# basic
-python3 DKT.py train $HOME/XKT/data/ktbd/junyi/train.json $HOME/XKT/data/ktbd/junyi/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx="gpu(0)" --model_dir $HOME/XKT/data/ktbd/junyi/model/DKT 
-# advanced path configuration
-python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx="gpu(0)" --model_name DKT --root=$HOME/XKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
-```
-And we can get something like that:
-```text
-junyi/
-├── model/
-│   └── DKT/
-│       ├── configuration.json
-│       ├── DKT-0001.parmas
-│       ├── DKT-0002.parmas
-│       ├── ...
-│       ├── DKT-0020.parmas
-│       ├── result.json
-│       └── result.log
-├── test.json
-└── train.json
-```
-The two command mentioned above are equally the same. 
-About how to use the advanced path configuration, 
-refer to [longling doc](https://longling.readthedocs.io/zh/latest/submodule/ML/index.html#configuration).
-
----
-
-### DKT
-```shell
-# DKT
-python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --ctx="cuda:0" --model_name DKT --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
-# DKT+
-python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=DKT;ku_num=int(835);hidden_num=int(900);dropout=float(0.5)" --loss_params "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)" --ctx="cuda:0" --model_name DKT+ --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
-```
-
-
-### EmbedDKT
-```shell
-# EmbedDKT
-python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);latent_dim=int(600);dropout=float(0.5)" --ctx="cuda:0" --model_name EmbedDKT --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
-# EmbedDKT+ 
-python3 DKT.py train \$data_dir/train.json \$data_dir/test.json --hyper_params "nettype=EmbedDKT;ku_num=int(835);hidden_num=int(900);latent_dim=int(600);dropout=float(0.5)" --loss_params "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)" --ctx="cuda:0" --model_name EmbedDKT+ --root=$HOME/TKT --root_data_dir=\$root/data/ktbd/\$dataset --data_dir=\$root_data_dir --dataset=junyi
-```
-
 
 ## Appendix
 
