@@ -28,7 +28,7 @@ def dataset():
 def root_data_dir(root_dir, dataset):
     dataset_dir = path_append(root_dir, "ktbd")
     dataset_dir = get_data("tests", dataset_dir)
-    yield path_append(dataset_dir, dataset, to_str=True)
+    yield path_append(dataset_dir, to_str=True)
 
 
 @pytest.fixture(scope="session")

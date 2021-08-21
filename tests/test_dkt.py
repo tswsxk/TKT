@@ -1,75 +1,51 @@
 # coding: utf-8
 # 2019/12/11 @ tongshiwei
 
+from TKT import DKT
+from TKT.DKT import etl
 
-from TKT.DKT import DKT
 
+def test_dkt(tmpdir, root_data_dir, train_dataset, test_dataset):
+    model_dir = str(tmpdir.mkdir("dkt"))
 
-def test_train(root_data_dir, dataset):
-    # test for DKT
-    DKT.run(
-        [
-            "train", "$data_dir/train.json", "$data_dir/test.json",
-            "--workspace", "DKT",
-            "--hyper_params",
-            "nettype=DKT;ku_num=int(50);hidden_num=int(100);dropout=float(0.5)",
-            "--end_epoch", "int(1)",
-            "--ctx", "cpu",
-            "--dataset", dataset,
-            "--root_data_dir", root_data_dir,
-            "--data_dir", "$root_data_dir"
-        ]
+    model = DKT(init_net=True, hyper_params={"ku_num": 50, "hidden_num": 100}, model_dir=model_dir, model_name="dkt")
+
+    model.train(
+        etl(train_dataset, model.cfg),
+        etl(test_dataset, model.cfg),
+        save=False,
+        end_epoch=2,
     )
 
-    # test for DKT+
-    try:
-        DKT.run(
-            [
-                "train", "$data_dir/train.json", "$data_dir/test.json",
-                "--workspace", "DKT+",
-                "--hyper_params",
-                "nettype=DKT;ku_num=int(50);hidden_num=int(100);latent_dim=int(35);dropout=float(0.5)",
-                "--loss_params", "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)",
-                "--end_epoch", "int(1)",
-                "--ctx", "cpu",
-                "--dataset", dataset,
-                "--root_data_dir", root_data_dir,
-                "--data_dir", "$root_data_dir"
-            ]
-        )
-    except ValueError:
-        assert True
+    model.save(model.cfg.model_dir)
 
-    # test for EmbedDKT
-    DKT.run(
-        [
-            "train", "$data_dir/train.json", "$data_dir/test.json",
-            "--workspace", "DKT",
-            "--hyper_params",
-            "nettype=EmbedDKT;ku_num=int(50);hidden_num=int(100);latent_dim=int(35);dropout=float(0.5)",
-            "--end_epoch", "int(1)",
-            "--ctx", "cpu",
-            "--dataset", dataset,
-            "--root_data_dir", root_data_dir,
-            "--data_dir", "$root_data_dir"
-        ]
+    model = DKT.from_pretrained(model_dir)
+
+    model.eval(etl(test_dataset, model.cfg))
+
+
+def test_benchmark(tmpdir, root_data_dir, train_dataset, test_dataset):
+    model_dir = str(tmpdir.mkdir("dkt"))
+
+    DKT.benchmark_train(
+        train_dataset,
+        test_dataset,
+        enable_hyper_search=True,
+        save=False,
+        model_dir=model_dir,
+        model_name="dkt",
+        end_epoch=1,
+        hyper_params={"ku_num": 50, "hidden_num": 100}
     )
 
-    # test for EmbedDKT+
-    try:
-        DKT.run(
-            [
-                "train", "$data_dir/train.json", "$data_dir/test.json",
-                "--workspace", "EmbedDKT+",
-                "--hyper_params",
-                "nettype=EmbedDKT;ku_num=int(50);hidden_num=int(100);latent_dim=int(35);dropout=float(0.5)",
-                "--loss_params", "lr=float(0.1);lw1=float(0.003);lw2=float(3.0)",
-                "--end_epoch", "int(1)",
-                "--ctx", "cpu",
-                "--dataset", dataset,
-                "--root_data_dir", root_data_dir,
-                "--data_dir", "$root_data_dir"
-            ]
-        )
-    except ValueError:
-        assert True
+    DKT.benchmark_train(
+        train_dataset,
+        test_dataset,
+        save=True,
+        model_dir=model_dir,
+        model_name="dkt",
+        end_epoch=2,
+        hyper_params={"ku_num": 50, "hidden_num": 100}
+    )
+    model = DKT.from_pretrained(model_dir, 1)
+    model.benchmark_eval(test_dataset, model_dir, 1)
