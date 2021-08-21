@@ -1,7 +1,7 @@
 # TKT
 
 [![PyPI](https://img.shields.io/pypi/v/TKT.svg)](https://pypi.python.org/pypi/TKT)
-[![Build Status](https://www.travis-ci.org/tswsxk/TKT.svg?branch=master)](https://www.travis-ci.org/tswsxk/TKT)
+[![test](https://github.com/tswsxk/TKT/actions/workflows/python-test.yml/badge.svg?branch=master)](https://github.com/tswsxk/TKT/actions/workflows/python-test.yml)
 [![codecov](https://codecov.io/gh/tswsxk/TKT/branch/master/graph/badge.svg)](https://codecov.io/gh/tswsxk/TKT)
 
 
