@@ -144,6 +144,6 @@ if __name__ == '__main__':
 
     torch.manual_seed(0)
 
-    # Fire(run)
-    #
-    run("train", "dkt", "a0910c", 10)
+    Fire(run)
+
+    # run("train", "dkt", "a0910c", 10)
