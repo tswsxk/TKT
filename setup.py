@@ -6,8 +6,11 @@ from setuptools import setup, find_packages
 test_deps = [
     'pytest>=4',
     'pytest-cov>=2.6.0',
-    'pytest-pep8>=1',
-    'EduData>=0.0.4',
+    'pytest-flake8',
+]
+bench_deps = [
+    'EduData>=0.0.17',
+    'fire'
 ]
 
 try:
@@ -27,13 +30,11 @@ setup(
                 'provide multiple knowledge tracing models.',
     extras_require={
         'test': test_deps,
+        'benchmark': bench_deps,
     },
     install_requires=torch_requires + [
-        'tqdm',
-        'mxnet',
-        'gluonnlp',
-        'sklearn',
-        'longling>=1.3.2',
+        'EduKTM>=0.0.6',
+        'PyBaize>=0.0.4',
     ],  # And any other dependencies foo needs
     entry_points={
     },
