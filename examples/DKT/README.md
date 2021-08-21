@@ -10,7 +10,7 @@ nnictl create --config config.yml
 
 * dkt
 ```sh
-python3 DKT.py train dkt a0910c 10 --hyper_params_update '{"hidden_num": 50}'  
+python3 DKT.py train dkt a0910c 10 --hyper_params_update '{"dropout": 0.5}'  
 ```
 
 * edkt
@@ -20,5 +20,5 @@ python3 DKT.py train edkt a0910c 10 --embdding_dim 50 --hyper_params_update '{"h
 
 ## Test
 ```sh
-python3 DKT.py test dkt a0910c 10  
+python3 DKT.py test dkt a0910c 1  
 ```
