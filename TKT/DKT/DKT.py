@@ -6,7 +6,7 @@ from baize import path_append, get_epoch_params_filepath, get_params_filepath
 from baize.const import CFG_JSON
 from baize.metrics import classification_report
 from baize.torch import (
-    light_module as lm, Configuration, ConfigurationParser, fit_wrapper, eval_wrapper, save_params, load_net
+    light_module as lm, Configuration, ConfigurationParser, fit_wrapper, eval_wrapper
 )
 from baize.torch.functional import pick, tensor2list
 from TKT import KTM
@@ -17,8 +17,9 @@ from EduKTM.utils import SLMLoss
 __all__ = ["etl", "Configuration", "ConfigurationParser", "DKT"]
 
 
-def etl(data_src, cfg: Configuration):
-    return _etl(data_src, cfg.batch_size)
+def etl(data_src, cfg: Configuration = None, batch_size=None):
+    batch_size = batch_size if batch_size is not None else cfg.batch_size
+    return _etl(data_src, batch_size)
 
 
 @fit_wrapper
@@ -54,13 +55,10 @@ def get_net(**kwargs):
 
 
 class DKT(KTM):
-    def __init__(self, init_net=False, cfg_path=None, *args, **kwargs):
-        super(DKT, self).__init__()
-        self.cfg = Configuration(params_path=cfg_path, *args, **kwargs)
+    def __init__(self, init_net=True, cfg_path=None, *args, **kwargs):
+        super(DKT, self).__init__(Configuration(params_path=cfg_path, *args, **kwargs))
         if init_net:
             self.net = DKTNet(**self.cfg.hyper_params)
-        else:
-            self.net = None
 
     def train(self, train_data, valid_data=None, re_init_net=False, enable_hyper_search=False,
               save=False, *args, **kwargs) -> ...:
@@ -84,23 +82,13 @@ class DKT(KTM):
             primary_key="macro_auc"
         )
 
-    def save(self, model_dir=None, *args, **kwargs) -> ...:
-        model_dir = model_dir if model_dir is not None else self.cfg.model_dir
-        select = kwargs.get("select", self.cfg.save_select)
-        save_params(get_params_filepath(self.cfg.model_name, model_dir), self.net, select)
-        self.cfg.dump(path_append(model_dir, CFG_JSON, to_str=True))
-        return model_dir
-
     def eval(self, test_data, *args, **kwargs) -> ...:
         return evaluation(self.net, test_data, *args, **kwargs)
-
-    def load(self, model_path, *args, **kwargs) -> ...:
-        load_net(model_path, self.net)
 
     @classmethod
     def from_pretrained(cls, model_dir, best_epoch=None, *args, **kwargs):
         cfg_path = path_append(model_dir, CFG_JSON)
-        model = DKT(init_net=True, cfg_path=cfg_path)
+        model = DKT(init_net=True, cfg_path=cfg_path, model_dir=model_dir)
         cfg = model.cfg
         model.load(
             get_epoch_params_filepath(cfg.model_name, best_epoch, cfg.model_dir)
