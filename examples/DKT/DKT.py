@@ -33,67 +33,6 @@ def get_dataset_and_config(dataset, train=None, valid=None, test=None, hyper_par
     return train, valid, test, hyper_params
 
 
-def dkt(dataset, enable_hyper_search=False):
-    train, valid, _, hyper_params = get_dataset_and_config(dataset)
-    DKT.benchmark_train(
-        train,
-        valid,
-        hyper_params=hyper_params,
-        end_epoch=10,
-        enable_hyper_search=enable_hyper_search,
-        save=True,
-        model_name="dkt",
-        model_dir="dkt"
-    )
-
-
-def embed_dkt(dataset, enable_hyper_search=False):
-    train, valid, _, hyper_params = get_dataset_and_config(dataset)
-    hyper_params.update(dict(add_embedding_layer=True, embedding_dim=35))
-    DKT.benchmark_train(
-        train,
-        valid,
-        hyper_params=hyper_params,
-        end_epoch=10,
-        enable_hyper_search=enable_hyper_search,
-        save=True,
-        model_name="edkt",
-        model_dir="edkt"
-    )
-
-
-def dkt_plus(dataset, enable_hyper_search=False):
-    train, valid, _, hyper_params = get_dataset_and_config(dataset)
-    DKT.benchmark_train(
-        train,
-        valid,
-        hyper_params=hyper_params,
-        end_epoch=10,
-        loss_params={"lr": 0.1, "lw1": 0.5, "lw2": 0.5},
-        enable_hyper_search=enable_hyper_search,
-        save=True,
-        model_name="dkt+",
-        model_dir="dkt+"
-    )
-
-
-def embed_dkt_plus(dataset, enable_hyper_search=False):
-    train, valid, _, hyper_params = get_dataset_and_config(dataset)
-    hyper_params.update(dict(add_embedding_layer=True, embedding_dim=35))
-
-    DKT.benchmark_train(
-        train,
-        valid,
-        hyper_params=hyper_params,
-        end_epoch=10,
-        loss_params={"lr": 0.1, "lw1": 0.5, "lw2": 0.5},
-        enable_hyper_search=enable_hyper_search,
-        save=True,
-        model_name="edkt+",
-        model_dir="edkt+"
-    )
-
-
 def train_model(model, dataset, enable_hyper_search=False, *args, **kwargs):
     train, valid, _, hyper_params = get_dataset_and_config(dataset)
     hyper_params.update(dict(add_embedding_layer=True, embedding_dim=35))
