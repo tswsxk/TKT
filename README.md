@@ -9,7 +9,8 @@ TKT is an extension of [EduKTM](https://github.com/bigdata-ustc/EduKTM),
 which has more advanced features making the training, 
 evaluating and deployment faster and easier.
 
-See [Examples](examples) for quick start
+See [Examples](examples) and [Scripts](scripts) for quick start.
+The beginner is advised to first get familiar with [EduKTM](https://github.com/bigdata-ustc/EduKTM).
 
 
 ## Performance in well-known Dataset
