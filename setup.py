@@ -35,7 +35,7 @@ setup(
     },
     install_requires=torch_requires + [
         'EduKTM>=0.0.6',
-        'PyBaize>=0.0.4',
+        'PyBaize>=0.0.5',
     ],  # And any other dependencies foo needs
     entry_points={
     },
